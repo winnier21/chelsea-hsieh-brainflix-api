@@ -1,13 +1,14 @@
 import express from "express"
 import 'dotenv/config'
 import cors from 'cors'
-import videosRoute from './routes/videos.js'
+import route from './routes/videos.js'
 
 const app = express()
 
 
 app.use(express.json())
-app.use(cors())
+const CORS_ORIGIN = process.env.CROSS_ORIGIN || 'http://localhost:5174';
+app.use(cors({ origin: CORS_ORIGIN }));
 app.use('/videos', route)
 app.use(express.static('public'))
 
