@@ -1,6 +1,6 @@
 import express from 'express';
 import fs from 'fs';
-import uuid4 from 'uuid4';
+import {v4, uuidv4 } from 'uuid';
 
 
 const router = express. Router();
@@ -35,7 +35,7 @@ router.post ('/', (req, res) =>{
     const videoData = JSON.parse(fs.readFileSync('./data/videos.json'))
     const { title, description } = req.body;
     const newVideo = {
-        id: uuid4(),
+        id: uuidv4(),
         title,
         channel: "Default Channel",
         image: "http://localhost:8080/images/image9.jpg",
@@ -52,7 +52,28 @@ router.post ('/', (req, res) =>{
     res.status(201).json({message: 'Thank you for uploading a video'})
 })
 
+router.post('/:videoId/comments', (req, res) => {
+    const videoData = JSON.parse(fs.readFileSync('./data/videos.json'))
+    const videoId = req.params.videoId
 
+    const newComments = {
+        id: uuidv4(),
+        name: req.body.name,
+        comment: req.body.comment,
+        timestamp: Date.now()
+    }
 
+    const video = videoData.find(video => video.id === videoId)
+
+    if (video) {
+        video.comments.push(newComments)
+        fs.writeFileSync('./data/videos.json', JSON.stringify(videoData))
+        res.status(201).json({message: 'Comment added succesfully'})
+    }else{
+        res.status(404).json({message: 'Video not found'})
+
+    }
+
+})  
 
 export default router;
