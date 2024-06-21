@@ -1,17 +1,13 @@
 import express from 'express';
-import cors from 'cors';
 import fs from 'fs';
 import uuid4 from 'uuid4';
 
-const app = express ();
-const PORT = process.env.PORT || 8080;
 
-app.use (cors());
-app.use (express.josn());
+const router = express. Router();
 
-app
 
-.get ('/', (req, res) => {
+//GET /videos
+router.get ('/', (req, res) => {
     const videoData = JSON.parse (fs.readFileSync ('./data/video.json'))
     const getData = videoData.map (video => ({
         id: video.id,
@@ -22,20 +18,41 @@ app
     res.json (getData)
 })
 
-.get ('/:videoId', (req,res)=>{
+//GET /videos/:id
+router.get ('/:videoId', (req,res)=>{
     const {videoId}= req.params
     const videoData = JSON.parse (fs.readFileSync('./data/video.json'))
     const videoDetails = videos.find ((video)=> video.id === videoId)
     
     if (!videoDetails){
-        return res.status (404).send ("Sorry, the video does not exist");
+        return res.status (404).send ("Sorry, Video not found");
     }
     res.json (videoDetails);
 });
 
-
-// Start the server on the specified port
-app.listen(PORT, () => {
-    console.log('App is running on port ', PORT);
+//POST /VIDEOS
+router.post ('/', (req, res) =>{
+    const videoData = JSON.parse(fs.readFileSync('./data/videos.json'))
+    const { title, description } = req.body;
+    const newVideo = {
+        id: uuid4(),
+        title,
+        channel: "Default Channel",
+        image: "http://localhost:8080/images/image9.jpg",
+        description,
+        views: 0,
+        likes: 0,
+        duration,
+        video: "https://unit-3-project-api-0a5620414506.herokuapp.com/stream",
+        timestamp: Date.now(),
+        comments: []
+    };
+    videoData.push (newVideo);
+    fs.writeFileSync("./data/videos.json", JSON.stringify(videoData));
+    res.status(201).json({message: 'Thank you for uploading a video'})
 })
 
+
+
+
+export default router;
