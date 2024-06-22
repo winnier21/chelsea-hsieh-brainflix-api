@@ -45,7 +45,7 @@ router.post ('/', (req, res) =>{
         id: uuidv4(),
         title,
         channel: "Default Channel",
-        image: "http://localhost:8080/images/image9.jpg",
+        image: "http://localhost:8082/images/image9.jpg",
         description,
         views: 0,
         likes: 0,
