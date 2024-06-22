@@ -74,7 +74,7 @@ router.post('/:videoId/comments', (req, res) => {
 
     if (video) {
         video.comments.push(newComments)
-        fs.writeFileSync('./data/videos.json', JSON.stringify(videoData))
+        fs.writeFileSync('./data/video.json', JSON.stringify(videoData))
         res.status(201).json({message: 'Comment added succesfully'})
     }else{
         res.status(404).json({message: 'Video not found'})

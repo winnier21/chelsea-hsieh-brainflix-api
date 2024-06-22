@@ -7,8 +7,8 @@ const app = express()
 
 
 app.use(express.json())
-const CORS_ORIGIN = process.env.CROSS_ORIGIN || 'http://localhost:5174';
-app.use(cors({ origin: CORS_ORIGIN }));
+// const CORS_ORIGIN = process.env.CROSS_ORIGIN || 'http://localhost:5174';
+app.use(cors());
 app.use('/videos', route)
 app.use(express.static('public'))
 
